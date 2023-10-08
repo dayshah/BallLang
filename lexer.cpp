@@ -18,7 +18,7 @@ struct TokenValue {
     }
 
     TokenValue(Token type): type(type) {
-        if (type != EOF) throw "ERROR";
+        if (type != Token::ENDOFFILE) throw "ERROR";
     }
 
     const Token type;
@@ -37,7 +37,7 @@ TokenValue getTokenValue() {
     };
 
     if (isalpha(c)) {
-        std::string identifier{};
+        std::string identifier;
         do {
             identifier.push_back(c); 
             c = getchar();
@@ -46,7 +46,7 @@ TokenValue getTokenValue() {
             return Token::IDENTIFIER;
         else
             return whichToken.at(identifier);
-    }
+   }
 
     if (isdigit(c) || c == '.') {
         std::string number;
@@ -76,5 +76,5 @@ TokenValue getTokenValue() {
 
 
 int main() {
-    std::cout << "Lexing time" << "\n";
+    std::cout << "Lex Luthor" << "\n";
 }
