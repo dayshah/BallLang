@@ -1,5 +1,5 @@
 
-CC=g++ -std=c++17
+CC=clang++ -std=c++17
 CFLAGS=-I.
 
 ODIR="obj"
