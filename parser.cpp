@@ -14,6 +14,10 @@ ExprAST parsePrimary() {
             if (current.doubleVal.has_value())
                 return NumberExprAST(current.doubleVal.value());
             else throw "ERROR: No doubleVal in NUMBER TokenValue";
+        case DEF:
+        case EXTERN:
+        case ERROR:
+            throw "ERROR: TokenValue got set to error...";
         default:
             throw "bro i dont know";
 

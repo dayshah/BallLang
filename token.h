@@ -4,6 +4,7 @@
 
 enum Token {
     ENDOFFILE,
+    ENDOFLINE,
     DEF,
     EXTERN,
     IDENTIFIER,
