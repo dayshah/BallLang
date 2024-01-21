@@ -8,7 +8,7 @@ ExprAST parsePrimary() {
     switch(current.type) {
         case IDENTIFIER:
             if (current.stringVal.has_value())
-                return parseIdentifier(current.stringVal.value());
+                return NumberExprAST(current.doubleVal.value());//parseIdentifier(current.stringVal.value());
             else throw "ERROR: No stringVal in IDENTIFIER TokenValue";
         case NUMBER:
             if (current.doubleVal.has_value())
@@ -20,10 +20,8 @@ ExprAST parsePrimary() {
             throw "ERROR: TokenValue got set to error...";
         default:
             throw "bro i dont know";
-
     }
 }
 
-ExprAST parseIdentifier(const std::string& identifier) {
-    
-}
+// ExprAST parseIdentifier(const std::string& identifier) {
+// }

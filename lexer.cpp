@@ -45,8 +45,3 @@ const TokenValue getTokenValue() {
 
     return TokenValue(Token::ERROR);
 }
-
-int main() {
-    std::cout << "Lex Luthor" << "\n";
-        
-}

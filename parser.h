@@ -5,6 +5,6 @@
 
 ExprAST parsePrimary();
 
-ExprAST parseIdentifier(const std::string& identifier);
+//ExprAST parseIdentifier(const std::string& identifier);
 
 #endif
