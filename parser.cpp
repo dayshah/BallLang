@@ -2,18 +2,24 @@
 #include "lexer.h"
 #include "abstract_syntax_tree.h"
 #include "parser.h"
+#include "token.h"
+
+namespace BallLang
+{
 
 ExprAST parsePrimary() {
     TokenValue current = getTokenValue();
     switch(current.type) {
         case IDENTIFIER:
             if (current.stringVal.has_value())
-                return NumberExprAST(current.doubleVal.value());//parseIdentifier(current.stringVal.value());
-            else throw "ERROR: No stringVal in IDENTIFIER TokenValue";
+                return VariableExprAST(current.stringVal.value());
+            else 
+                throw "ERROR: No stringVal in IDENTIFIER TokenValue";
         case NUMBER:
             if (current.doubleVal.has_value())
                 return NumberExprAST(current.doubleVal.value());
-            else throw "ERROR: No doubleVal in NUMBER TokenValue";
+            else 
+                throw "ERROR: No doubleVal in NUMBER TokenValue";
         case DEF:
         case EXTERN:
         case ERROR:
@@ -22,6 +28,4 @@ ExprAST parsePrimary() {
             throw "bro i dont know";
     }
 }
-
-// ExprAST parseIdentifier(const std::string& identifier) {
-// }
+}

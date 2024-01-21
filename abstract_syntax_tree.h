@@ -3,6 +3,9 @@
 
 #include <string>
 
+namespace BallLang
+{
+
 struct ExprAST {
     virtual ~ExprAST() = default;
 };
@@ -51,5 +54,7 @@ struct FunctionAST : public ExprAST {
     const PrototypeAST prototype;
     const ExprAST body;
 };
+
+}
 
 #endif

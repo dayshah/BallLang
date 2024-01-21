@@ -5,6 +5,8 @@
 #include <iostream>
 #include <version>
 
+namespace BallLang
+{
 int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;
     while (true) {
@@ -27,4 +29,4 @@ int main() {
         }
     }
 }
-
+}

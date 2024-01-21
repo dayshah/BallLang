@@ -6,6 +6,8 @@
 #include <optional>
 #include "token.h"
 
+namespace BallLang {
+
 struct TokenValue {
     TokenValue(Token type, std::string value): type(type), stringVal(value) {
         switch (type) {
@@ -30,5 +32,7 @@ struct TokenValue {
 };
 
 const TokenValue getTokenValue();
+
+}
 
 #endif

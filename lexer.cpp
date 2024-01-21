@@ -3,6 +3,9 @@
 #include <unordered_map>
 #include "lexer.h"
 
+namespace BallLang
+{
+
 const TokenValue getTokenValue() {
     char c = getchar();
     while (c == ' ') c = getchar();
@@ -44,4 +47,6 @@ const TokenValue getTokenValue() {
     if (c == EOF) return TokenValue(Token::ENDOFFILE);
 
     return TokenValue(Token::ERROR);
+}
+
 }
