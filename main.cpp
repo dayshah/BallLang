@@ -5,8 +5,6 @@
 #include <iostream>
 
 int main() {
-
-
     while (true) {
         std::cout << "> ";
         const TokenValue tokenValue = getTokenValue();
