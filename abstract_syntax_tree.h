@@ -31,7 +31,7 @@ struct BinaryExprAST : public ExprAST {
     const ExprAST RHS;
 };
 
-class CallExprAST : public ExprAST {
+struct CallExprAST : public ExprAST {
     CallExprAST(const std::string& callee, const std::vector<ExprAST>* const args):
         callee(callee), args(args) {}
 

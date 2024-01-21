@@ -11,7 +11,7 @@ int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;
     while (true) {
         std::cout << "> ";
-        const TokenValue tokenValue = getTokenValue();
+        const TokenValue tokenValue = getTok();
         switch(tokenValue.type) {
             case Token::ENDOFFILE:
                 return 0;
