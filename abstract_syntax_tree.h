@@ -40,11 +40,11 @@ struct CallExprAST : public ExprAST {
 };
 
 struct PrototypeAST : public ExprAST {
-    PrototypeAST(const std::string& name, const std::vector<std::string>* const args):
+    PrototypeAST(const std::string& name, const std::vector<std::string>& args):
         name(name), args(args) {}
 
     const std::string name;
-    const std::vector<std::string>* const args;
+    const std::vector<std::string> args;
 };
 
 struct FunctionAST : public ExprAST {

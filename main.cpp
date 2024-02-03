@@ -7,26 +7,28 @@
 
 namespace BallLang
 {
+
 int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;
     while (true) {
         std::cout << "> ";
-        const TokenValue tokenValue = getTok();
-        switch(tokenValue.type) {
-            case Token::ENDOFFILE:
+        const Token token = getTok();
+        switch(token.type) {
+            case TokenType::ENDOFFILE:
                 return 0;
-            case Token::ENDOFLINE:
+            case TokenType::ENDOFLINE:
                 break;
-            case Token::DEF:
-                //handleDefinition();
+            case TokenType::DEF:
+                handleDefinition(token);
                 break;
-            case Token::EXTERN:
-                //handleExtern();
+            case TokenType::EXTERN:
+                handleExtern(token);
                 break;
             default:
-                //handleTopLevel();
+                handleTopLevel(token);
                 break;
         }
     }
 }
+
 }

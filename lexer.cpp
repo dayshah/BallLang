@@ -6,12 +6,12 @@
 namespace BallLang
 {
 
-const std::unordered_map<std::string, Token> whichToken{
-    {"def", Token::DEF},
-    {"extern", Token::EXTERN},
+const std::unordered_map<std::string, TokenType> whichToken{
+    {"def", TokenType::DEF},
+    {"extern", TokenType::EXTERN},
 };
 
-const TokenValue getTok() {
+const Token getTok() {
     char c = getchar();
     while (c == ' ') c = getchar();
 
@@ -23,8 +23,8 @@ const TokenValue getTok() {
         } while (isalnum(c));
         const auto& token_p = whichToken.find(identifier);
         return token_p == whichToken.end() ?
-            TokenValue(Token::IDENTIFIER, identifier) :
-            TokenValue(token_p->second, identifier);
+            Token{TokenType::IDENTIFIER, identifier} :
+            Token{token_p->second, identifier};
     }
     else if (isdigit(c) || c == '.') {
         std::string number{};
@@ -33,17 +33,17 @@ const TokenValue getTok() {
             c = getchar();
         } while (isdigit(c) || c == '.');
         double numberVal = strtod(number.c_str(), 0);
-        return TokenValue(Token::NUMBER, numberVal);
+        return Token(TokenType::NUMBER, numberVal);
     }
     else if (c == '#') {
         do {
             c = getchar();
         } while (c != EOF && c != '\n' && c != '\r');
-        if (c == EOF) return TokenValue(Token::ENDOFFILE);
+        if (c == EOF) return Token(TokenType::ENDOFFILE);
         else return getTok();
     }
-    else if (c == EOF) return TokenValue(Token::ENDOFFILE);
-    else return TokenValue(Token::ERROR);
+    else if (c == EOF) return Token(TokenType::ENDOFFILE);
+    else return Token(TokenType::ERROR);
 }
 
 }

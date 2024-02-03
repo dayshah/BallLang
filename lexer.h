@@ -7,7 +7,7 @@
 
 namespace BallLang {
 
-enum Token {
+enum TokenType {
     ENDOFFILE,
     ENDOFLINE,
     DEF,
@@ -17,17 +17,17 @@ enum Token {
     ERROR,
 };
 
-struct TokenValue {
-    TokenValue(Token type, const std::variant<std::string,double>& value): 
+struct Token {
+    Token(TokenType type, const std::variant<std::string,double>& value): 
         type(type), value(value) {}
 
-    TokenValue(Token type) : type(type) {}
+    Token(TokenType type) : type(type) {}
 
-    const Token type;
+    const TokenType type;
     const std::variant<std::string,double> value;
 };
 
-const TokenValue getTok();
+const Token getTok();
 
 }
 
