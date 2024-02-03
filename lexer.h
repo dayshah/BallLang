@@ -14,6 +14,8 @@ enum TokenType {
     EXTERN,
     IDENTIFIER,
     NUMBER,
+    OPEN_PAREN,
+    CLOSE_PAREN,
     ERROR,
 };
 

@@ -23,7 +23,7 @@ struct VariableExprAST : ExprAST {
 };
 
 struct BinaryExprAST : public ExprAST {
-    BinaryExprAST(char oper, const ExprAST LHS, const ExprAST RHS):
+    BinaryExprAST(char oper, ExprAST&& LHS, ExprAST&& RHS):
         oper(oper), LHS(LHS), RHS(RHS) {}
 
     const char oper;
@@ -32,15 +32,15 @@ struct BinaryExprAST : public ExprAST {
 };
 
 struct CallExprAST : public ExprAST {
-    CallExprAST(const std::string& callee, const std::vector<ExprAST>* const args):
+    CallExprAST(const std::string& callee, std::vector<ExprAST>&& args):
         callee(callee), args(args) {}
 
     const std::string callee;
-    const std::vector<ExprAST>* const args; 
+    const std::vector<ExprAST> args; 
 };
 
 struct PrototypeAST : public ExprAST {
-    PrototypeAST(const std::string& name, const std::vector<std::string>& args):
+    PrototypeAST(const std::string& name, std::vector<std::string>&& args):
         name(name), args(args) {}
 
     const std::string name;
@@ -48,7 +48,7 @@ struct PrototypeAST : public ExprAST {
 };
 
 struct FunctionAST : public ExprAST {
-    FunctionAST(const PrototypeAST prototype, const ExprAST body):
+    FunctionAST(PrototypeAST&& prototype, ExprAST&& body):
         prototype(prototype), body(body) {}
 
     const PrototypeAST prototype;

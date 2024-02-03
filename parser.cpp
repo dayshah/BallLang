@@ -4,6 +4,7 @@
 #include "parser.h"
 #include <iostream>
 #include <optional>
+#include <variant>
 #include <vector>
 
 namespace BallLang
@@ -33,25 +34,38 @@ ExprAST parsePrimary() {
 
 std::optional<PrototypeAST> parsePrototype(const Token& token) {
     if (token.type != TokenType::IDENTIFIER) return std::nullopt;
+    const std::string& functionName = std::get<std::string>(token.value);
+    const Token openParen = getTok();
+    if (openParen.type != TokenType::OPEN_PAREN) return std::nullopt;
 
+    std::vector<std::string> functionArgs{};
+    while (true) {
+        const Token arg = getTok();
+        if (arg.type == TokenType::IDENTIFIER)
+            functionArgs.emplace_back(std::move(std::get<std::string>(arg.value)));
+        else if (arg.type == TokenType::CLOSE_PAREN)
+            return PrototypeAST { functionName, std::move(functionArgs) };
+        else
+            return std::nullopt;
+    }
 }
 
 std::optional<FunctionAST> parseDefinition(const Token& _token) { // throw away def
-    const std::optional<PrototypeAST> prototype = parsePrototype(getTok());
+    std::optional<PrototypeAST> prototype = parsePrototype(getTok());
     if (!prototype.has_value()) return std::nullopt;
-    const std::optional<ExprAST> expression = parseExpression(getTok());
+    std::optional<ExprAST> expression = parseExpression(getTok());
     if (!expression.has_value()) return std::nullopt;
     return FunctionAST {
-        prototype.value(),
-        expression.value()
+        std::move(prototype.value()),
+        std::move(expression.value())
     };
 }
 
 std::optional<FunctionAST> parseTopLevelExpr(const Token& token) {
-    if (const std::optional<ExprAST> expression = parseExpression(token))
+    if (std::optional<ExprAST> expression = parseExpression(token))
         return FunctionAST {
-            PrototypeAST {"anonymous_expression", std::vector<std::string>{}},
-            expression.value()
+            std::move(PrototypeAST {"anonymous_expression", std::vector<std::string>{}}),
+            std::move(expression.value())
         };
     else return std::nullopt;
 }

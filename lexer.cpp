@@ -15,7 +15,10 @@ const Token getTok() {
     char c = getchar();
     while (c == ' ') c = getchar();
 
-    if (isalpha(c)) {
+    if (c == EOF) return Token(TokenType::ENDOFFILE);
+    else if (c == '(') return Token(TokenType::OPEN_PAREN);
+    else if (c == ')') return Token(TokenType::CLOSE_PAREN);
+    else if (isalpha(c)) { // an identifier
         std::string identifier{};
         do {
             identifier.push_back(c);
@@ -26,7 +29,7 @@ const Token getTok() {
             Token{TokenType::IDENTIFIER, identifier} :
             Token{token_p->second, identifier};
     }
-    else if (isdigit(c) || c == '.') {
+    else if (isdigit(c) || c == '.') { // a number
         std::string number{};
         do {
             number.push_back(c);
@@ -35,14 +38,13 @@ const Token getTok() {
         double numberVal = strtod(number.c_str(), 0);
         return Token(TokenType::NUMBER, numberVal);
     }
-    else if (c == '#') {
+    else if (c == '#') { // a comment
         do {
             c = getchar();
         } while (c != EOF && c != '\n' && c != '\r');
         if (c == EOF) return Token(TokenType::ENDOFFILE);
         else return getTok();
     }
-    else if (c == EOF) return Token(TokenType::ENDOFFILE);
     else return Token(TokenType::ERROR);
 }
 
