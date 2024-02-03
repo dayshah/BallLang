@@ -2,6 +2,7 @@
 #define AST_INCLUDED
 
 #include <string>
+#include <utility>
 
 namespace BallLang
 {
@@ -10,49 +11,64 @@ struct ExprAST {
     virtual ~ExprAST() = default;
 };
 
-struct NumberExprAST :  ExprAST {
-    NumberExprAST(double val): value(val) {}
+struct NumberExprAST : public ExprAST {
+    NumberExprAST(const double val): value(val) {}
+    NumberExprAST(NumberExprAST&& numberExpr): value(numberExpr.value) {}
 
-    const double value;
+    double value;
 };
 
-struct VariableExprAST : ExprAST {
-    VariableExprAST(const std::string& name): name(name) {}
+struct VariableExprAST : public ExprAST {
+    VariableExprAST(std::string&& name): name(std::move(name)) {}
+    VariableExprAST(VariableExprAST&& variableExpr):
+        name(std::move(variableExpr.name)) {}
 
-    const std::string name;
+    std::string name;
 };
 
 struct BinaryExprAST : public ExprAST {
-    BinaryExprAST(char oper, ExprAST&& LHS, ExprAST&& RHS):
-        oper(oper), LHS(LHS), RHS(RHS) {}
+    BinaryExprAST(const char oper, ExprAST&& LHS, ExprAST&& RHS):
+        oper(oper), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+    
+    BinaryExprAST(BinaryExprAST&& binaryExpr):
+        oper(binaryExpr.oper), LHS(std::move(binaryExpr.LHS)), RHS(std::move(binaryExpr.RHS)) {}
 
-    const char oper;
-    const ExprAST LHS;
-    const ExprAST RHS;
+    char oper;
+    ExprAST LHS;
+    ExprAST RHS;
 };
 
 struct CallExprAST : public ExprAST {
-    CallExprAST(const std::string& callee, std::vector<ExprAST>&& args):
-        callee(callee), args(args) {}
+    CallExprAST(std::string&& callee, std::vector<ExprAST>&& args):
+        callee(std::move(callee)), args(std::move(args)) {}
 
-    const std::string callee;
-    const std::vector<ExprAST> args; 
+    CallExprAST(CallExprAST&& callExpr):
+        callee(std::move(callExpr.callee)), args(std::move(callExpr.args)) {}
+
+    std::string callee;
+    std::vector<ExprAST> args; 
 };
 
 struct PrototypeAST : public ExprAST {
-    PrototypeAST(const std::string& name, std::vector<std::string>&& args):
-        name(name), args(args) {}
+    PrototypeAST(std::string&& name, std::vector<std::string>&& args):
+        name(std::move(name)), args(std::move(args)) {}
 
-    const std::string name;
-    const std::vector<std::string> args;
+    PrototypeAST(PrototypeAST&& prototype):
+        name(std::move(prototype.name)), args(std::move(prototype.args)) {}
+
+    std::string name;
+    std::vector<std::string> args;
 };
 
 struct FunctionAST : public ExprAST {
     FunctionAST(PrototypeAST&& prototype, ExprAST&& body):
-        prototype(prototype), body(body) {}
+        prototype(std::move(prototype)), body(std::move(body)) {}
 
-    const PrototypeAST prototype;
-    const ExprAST body;
+    FunctionAST(FunctionAST&& function):
+        prototype(std::move(function.prototype)), body(std::move(function.body)) {}
+
+    PrototypeAST prototype;
+    ExprAST body;
 };
 
 }

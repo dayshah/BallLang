@@ -20,16 +20,19 @@ enum TokenType {
 };
 
 struct Token {
-    Token(TokenType type, const std::variant<std::string,double>& value): 
+    Token(TokenType type, const double value):
         type(type), value(value) {}
+    
+    Token(TokenType type, std::string&& value):
+        type(type), value(std::move(value)) {}
 
-    Token(TokenType type) : type(type) {}
+    Token(TokenType type): type(type) {}
 
     const TokenType type;
-    const std::variant<std::string,double> value;
+    std::variant<std::string,double> value;
 };
 
-const Token getTok();
+Token getTok();
 
 }
 

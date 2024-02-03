@@ -11,7 +11,7 @@ const std::unordered_map<std::string, TokenType> whichToken{
     {"extern", TokenType::EXTERN},
 };
 
-const Token getTok() {
+Token getTok() {
     char c = getchar();
     while (c == ' ') c = getchar();
 
@@ -26,8 +26,8 @@ const Token getTok() {
         } while (isalnum(c));
         const auto& token_p = whichToken.find(identifier);
         return token_p == whichToken.end() ?
-            Token{TokenType::IDENTIFIER, identifier} :
-            Token{token_p->second, identifier};
+            Token{TokenType::IDENTIFIER, std::move(identifier)} :
+            Token{token_p->second};
     }
     else if (isdigit(c) || c == '.') { // a number
         std::string number{};

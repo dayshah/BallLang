@@ -12,7 +12,7 @@ int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;
     while (true) {
         std::cout << "> ";
-        const Token token = getTok();
+        Token token = getTok();
         switch(token.type) {
             case TokenType::ENDOFFILE:
                 return 0;

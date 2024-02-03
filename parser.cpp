@@ -10,47 +10,56 @@
 namespace BallLang
 {
 
-ExprAST parsePrimary() {
+std::optional<FunctionAST> parseDefinition(Token& _token);
+std::optional<PrototypeAST> parseExtern(Token& _token);
+
+std::optional<ExprAST> parsePrimary() {
     Token current = getTok();
     switch(current.type) {
-        case IDENTIFIER:
-            if (const std::string* value = std::get_if<std::string>(&current.value))
-                return VariableExprAST(*value);
-            else 
-                throw "ERROR: No stringVal in IDENTIFIER TokenValue";
-        case NUMBER:
-            if (const double* value = std::get_if<double>(&current.value))
-                return NumberExprAST(*value);
-            else 
-                throw "ERROR: No doubleVal in NUMBER TokenValue";
+        case IDENTIFIER: {
+            std::string& value = std::get<std::string>(current.value);
+            return VariableExprAST(std::move(value));
+        }
+        case NUMBER: {
+            double value = std::get<double>(current.value);
+            return NumberExprAST(value);
+        }
         case DEF:
+            return parseDefinition(current);
         case EXTERN:
+            return parseExtern(current);
         case ERROR:
-            throw "ERROR: TokenValue got set to error...";
+            return std::nullopt;
         default:
-            throw "bro i dont know";
+            return std::nullopt;
     }
 }
 
-std::optional<PrototypeAST> parsePrototype(const Token& token) {
+std::optional<ExprAST> parseExpression(Token token) {
+    return std::nullopt;
+}
+
+// funcName ( args... )
+std::optional<PrototypeAST> parsePrototype(Token token) {
     if (token.type != TokenType::IDENTIFIER) return std::nullopt;
-    const std::string& functionName = std::get<std::string>(token.value);
+    std::string& functionName = std::get<std::string>(token.value);
     const Token openParen = getTok();
     if (openParen.type != TokenType::OPEN_PAREN) return std::nullopt;
 
     std::vector<std::string> functionArgs{};
     while (true) {
-        const Token arg = getTok();
+        Token arg = getTok();
         if (arg.type == TokenType::IDENTIFIER)
             functionArgs.emplace_back(std::move(std::get<std::string>(arg.value)));
         else if (arg.type == TokenType::CLOSE_PAREN)
-            return PrototypeAST { functionName, std::move(functionArgs) };
+            return PrototypeAST { std::move(functionName), std::move(functionArgs) };
         else
             return std::nullopt;
     }
 }
 
-std::optional<FunctionAST> parseDefinition(const Token& _token) { // throw away def
+// def {prototype} {expression}
+std::optional<FunctionAST> parseDefinition(Token& _token) { // throw away def
     std::optional<PrototypeAST> prototype = parsePrototype(getTok());
     if (!prototype.has_value()) return std::nullopt;
     std::optional<ExprAST> expression = parseExpression(getTok());
@@ -61,7 +70,8 @@ std::optional<FunctionAST> parseDefinition(const Token& _token) { // throw away 
     };
 }
 
-std::optional<FunctionAST> parseTopLevelExpr(const Token& token) {
+// expression {functionAST}
+std::optional<FunctionAST> parseTopLevelExpr(Token& token) {
     if (std::optional<ExprAST> expression = parseExpression(token))
         return FunctionAST {
             std::move(PrototypeAST {"anonymous_expression", std::vector<std::string>{}}),
@@ -70,19 +80,20 @@ std::optional<FunctionAST> parseTopLevelExpr(const Token& token) {
     else return std::nullopt;
 }
 
-std::optional<PrototypeAST> parseExtern(const Token& _token) { // throw away initial extern
+// extern {prototypeAST}
+std::optional<PrototypeAST> parseExtern(Token& _token) { // throw away initial extern
     return parsePrototype(getTok());
 }
 
-void handleTopLevel(const Token& token) { 
+void handleTopLevel(Token& token) { 
     if (parseTopLevelExpr(token).has_value()) std::cout << "parsed top level"; 
     else getTok();
 }
-void handleExtern(const Token& token) { 
+void handleExtern(Token& token) { 
     if (parseExtern(token).has_value()) std::cout << "parsed extern";
     else getTok();
 }
-void handleDefinition(const Token& token) { 
+void handleDefinition(Token& token) { 
     if (parseDefinition(token).has_value()) std::cout << "parsed definition";
     else getTok();
 }
