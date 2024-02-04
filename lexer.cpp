@@ -2,30 +2,38 @@
 #include <iostream>
 #include <unordered_map>
 #include "lexer.h"
+#include "parser.h"
 
 namespace BallLang
 {
 
-const std::unordered_map<std::string, TokenType> whichToken{
+const std::unordered_map<std::string, TokenType> defOrExtern{
     {"def", TokenType::DEF},
     {"extern", TokenType::EXTERN},
 };
 
 Token getTok() {
-    char c = getchar();
-    while (c == ' ') c = getchar();
+    char c;
+    do { c = getchar(); } while (c == ' ');
 
-    if (c == EOF) return Token(TokenType::ENDOFFILE);
-    else if (c == '(') return Token(TokenType::OPEN_PAREN);
-    else if (c == ')') return Token(TokenType::CLOSE_PAREN);
+    if (c == EOF)
+        return Token(TokenType::ENDOFFILE);
+    else if (c == '(')
+        return Token(TokenType::OPEN_PAREN);
+    else if (c == ')')
+        return Token(TokenType::CLOSE_PAREN);
+    else if (c == ',')
+        return Token(TokenType::COMMA);
+    else if (BinopPrecedence.find(c) != BinopPrecedence.end())
+        return Token(TokenType::BINOP, c);
     else if (isalpha(c)) { // an identifier
         std::string identifier{};
         do {
             identifier.push_back(c);
             c = getchar();
         } while (isalnum(c));
-        const auto& token_p = whichToken.find(identifier);
-        return token_p == whichToken.end() ?
+        const auto& token_p = defOrExtern.find(identifier);
+        return token_p == defOrExtern.end() ?
             Token{TokenType::IDENTIFIER, std::move(identifier)} :
             Token{token_p->second};
     }

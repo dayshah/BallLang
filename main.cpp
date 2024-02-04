@@ -19,13 +19,13 @@ int main() {
             case TokenType::ENDOFLINE:
                 break;
             case TokenType::DEF:
-                handleDefinition(token);
+                handleDefinition(std::move(token));
                 break;
             case TokenType::EXTERN:
-                handleExtern(token);
+                handleExtern(std::move(token));
                 break;
             default:
-                handleTopLevel(token);
+                handleTopLevel(std::move(token));
                 break;
         }
     }
