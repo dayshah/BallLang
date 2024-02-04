@@ -4,6 +4,7 @@
 
 #include <string>
 #include <optional>
+#include <iostream>
 
 namespace BallLang {
 
@@ -30,13 +31,22 @@ const std::unordered_map<char, int> BinopPrecedence{
 
 struct Token {
     Token(TokenType type, const double value):
-        type(type), value(value) {}
-    
+        type(type), value(value)
+    {
+        if (type != NUMBER) std::cout << "ERROR: expected number" << std::endl;
+    }
+
     Token(TokenType type, std::string&& value):
-        type(type), value(std::move(value)) {}
+        type(type), value(std::move(value))
+    {
+        if (type != IDENTIFIER) std::cout << "ERROR: expected identifier" << std::endl;
+    }
 
     Token(TokenType type, const char value):
-        type(type), value(value) {}
+        type(type), value(value)
+    {
+        if (type != BINOP) std::cout << "ERROR: expected BINOP" << std::endl;
+    }
 
     Token(TokenType type): type(type) {} // still allocating space for variant here, could change structure
 

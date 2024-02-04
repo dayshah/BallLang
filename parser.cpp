@@ -60,7 +60,7 @@ std::optional<ExprAST> parseRHS(int lastPrecedence, ExprAST&& LHS) {
     if (!RHS.has_value()) return std::nullopt;
     // need binop precedence logic
     return BinaryExprAST { 
-        std::get<char>(binop.value), 
+        std::get<char>(binop.value),
         std::move(LHS), 
         std::move(RHS.value())
     };
