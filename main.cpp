@@ -5,23 +5,20 @@
 #include <iostream>
 #include <version>
 
-namespace BallLang
-{
-
 int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;
     while (true) {
         std::cout << "> ";
-        Token token = getTok();
+        BallLang::Token token = BallLang::getTok();
         switch(token.type) {
-            case TokenType::ENDOFFILE:
+            case BallLang::TokenType::ENDOFFILE:
                 return 0;
-            case TokenType::ENDOFLINE:
+            case BallLang::TokenType::ENDOFLINE:
                 break;
-            case TokenType::DEF:
+            case BallLang::TokenType::DEF:
                 handleDefinition(std::move(token));
                 break;
-            case TokenType::EXTERN:
+            case BallLang::TokenType::EXTERN:
                 handleExtern(std::move(token));
                 break;
             default:
@@ -29,6 +26,5 @@ int main() {
                 break;
         }
     }
-}
-
+    return 0;
 }
