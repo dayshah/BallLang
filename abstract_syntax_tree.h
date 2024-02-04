@@ -11,6 +11,7 @@ struct ExprAST {
     virtual ~ExprAST() = default;
 };
 
+// number
 struct NumberExprAST : public ExprAST {
     NumberExprAST(const double val): value(val) {}
     NumberExprAST(NumberExprAST&& numberExpr): value(numberExpr.value) {}
@@ -18,6 +19,7 @@ struct NumberExprAST : public ExprAST {
     double value;
 };
 
+// variableName
 struct VariableExprAST : public ExprAST {
     VariableExprAST(std::string&& name): name(std::move(name)) {}
     VariableExprAST(VariableExprAST&& variableExpr):
@@ -26,6 +28,7 @@ struct VariableExprAST : public ExprAST {
     std::string name;
 };
 
+// expression binop expression
 struct BinaryExprAST : public ExprAST {
     BinaryExprAST(const char oper, ExprAST&& LHS, ExprAST&& RHS):
         oper(oper), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
@@ -38,6 +41,7 @@ struct BinaryExprAST : public ExprAST {
     ExprAST RHS;
 };
 
+// calleeName (args{expression}...)
 struct CallExprAST : public ExprAST {
     CallExprAST(std::string&& callee, std::vector<ExprAST>&& args):
         callee(std::move(callee)), args(std::move(args)) {}
@@ -49,6 +53,7 @@ struct CallExprAST : public ExprAST {
     std::vector<ExprAST> args; 
 };
 
+// functionName(args{strings}...)
 struct PrototypeAST : public ExprAST {
     PrototypeAST(std::string&& name, std::vector<std::string>&& args):
         name(std::move(name)), args(std::move(args)) {}
@@ -60,6 +65,7 @@ struct PrototypeAST : public ExprAST {
     std::vector<std::string> args;
 };
 
+// prototype body
 struct FunctionAST : public ExprAST {
     FunctionAST(PrototypeAST&& prototype, ExprAST&& body):
         prototype(std::move(prototype)), body(std::move(body)) {}

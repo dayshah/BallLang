@@ -10,12 +10,6 @@
 namespace BallLang
 {
 
-// forward declarations
-std::optional<FunctionAST> parseDefinition(Token&& _token);
-std::optional<PrototypeAST> parseExtern(Token&& _token);
-std::optional<ExprAST> parseExpression(Token&& token);
-std::optional<ExprAST> parsePrimary(Token&& token);
-
 // variable
 // identifier ( {ExprAST},... )
 std::optional<ExprAST> parseIdentifierExpr(Token&& token) {
@@ -53,17 +47,29 @@ std::optional<ExprAST> parsePrimary(Token&& token) {
 
 // LHS {binop} RHS
 std::optional<ExprAST> parseRHS(int lastPrecedence, ExprAST&& LHS) {
-    Token binop = getTok();
-    if (binop.type != BINOP) return std::nullopt;
-    Token rhsToken = getTok();
-    std::optional<ExprAST> RHS = parsePrimary(std::move(rhsToken));
-    if (!RHS.has_value()) return std::nullopt;
-    // need binop precedence logic
-    return BinaryExprAST { 
-        std::get<char>(binop.value),
-        std::move(LHS), 
-        std::move(RHS.value())
-    };
+    while (true) {
+        if (!BinopPrecedence.contains(std::cin.peek())) 
+            return LHS; // can't handle spaces before binop rn
+        Token binop = getTok();
+        if (binop.type != BINOP) return std::nullopt; // peek failure
+        int currentOpPrecedence = BinopPrecedence.at(std::get<char>(binop.value));
+        if (currentOpPrecedence < lastPrecedence)
+            return LHS;
+
+        std::optional<ExprAST> RHS = parsePrimary(getTok());
+        if (!RHS.has_value()) return std::nullopt;
+
+        const auto nextBinopPrecedence = BinopPrecedence.find(std::cin.peek());
+        if (nextBinopPrecedence != BinopPrecedence.end() && currentOpPrecedence < nextBinopPrecedence->second)
+            RHS = parseRHS(currentOpPrecedence + 1, std::move(RHS.value()));
+            // recursive parseRHS - should rework this messy logic to make more sense
+
+        LHS = BinaryExprAST { 
+            std::get<char>(binop.value),
+            std::move(LHS),
+            std::move(RHS.value())
+        };
+    }
 }
 
 // {primary} {RHS}

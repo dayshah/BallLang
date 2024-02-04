@@ -9,6 +9,8 @@
 namespace BallLang
 {
 
+std::optional<ExprAST> parseExpression(Token&& token);
+
 std::optional<PrototypeAST> parseExtern(Token&& _token);
 std::optional<FunctionAST> parseTopLevelExpr(Token&& token);
 std::optional<FunctionAST> parseDefinition(Token&& _token);
