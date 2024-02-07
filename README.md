@@ -1,8 +1,8 @@
 # CodeWithBasketball
 
-Compile into ball
+Build Docker Container
 ```
-make ball
+docker run -it BallLang
 ```
 
 Clean

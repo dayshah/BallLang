@@ -18,6 +18,8 @@ add_definitions(${LLVM_DEFINITIONS_LIST})
 
 add_executable(BallLang main.cpp parser.cpp lexer.cpp)
 
+target_link_libraries(BallLang ${llvm_libs})
+
 target_include_directories(
     BallLang PUBLIC
     "${PROJECT_BINARY_DIR}"

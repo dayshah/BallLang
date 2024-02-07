@@ -5,6 +5,8 @@
 #include <string>
 #include <optional>
 #include <iostream>
+#include <unordered_map>
+#include <variant>
 
 namespace BallLang {
 

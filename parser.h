@@ -3,8 +3,9 @@
 
 #include "abstract_syntax_tree.h"
 #include "lexer.h"
-#include <unordered_map> 
+#include <unordered_map>
 #include <iostream>
+#include <optional>
 
 namespace BallLang
 {
