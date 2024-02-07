@@ -6,4 +6,6 @@ WORKDIR /BallLang
 
 COPY . .
 
-RUN cmake . && make
+RUN mkdir build && cd build && cmake .. && make
+
+CMD ["./build/BallLang"]

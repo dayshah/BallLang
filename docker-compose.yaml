@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  ball-lang:
-    build: .
-    volumes:
-      - .:/BallLang
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
