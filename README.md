@@ -1,11 +1,11 @@
 # CodeWithBasketball
 
-Build Docker Container
+Build
 ```
-docker run -it BallLang
+docker build -t ball-lang
 ```
 
-Clean
+Run
 ```
-make clean
+docker run -it ball-lang
 ```
