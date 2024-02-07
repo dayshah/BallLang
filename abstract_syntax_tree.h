@@ -33,7 +33,7 @@ struct VariableExprAST : public ExprAST {
 struct BinaryExprAST : public ExprAST {
     BinaryExprAST(const char oper, ExprAST&& LHS, ExprAST&& RHS):
         oper(oper), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
-    
+
     BinaryExprAST(BinaryExprAST&& binaryExpr):
         oper(binaryExpr.oper), LHS(std::move(binaryExpr.LHS)), RHS(std::move(binaryExpr.RHS)) {}
 
