@@ -6,6 +6,6 @@ WORKDIR /BallLang
 
 COPY . .
 
-RUN mkdir build && cd build && cmake .. && make
+RUN rm -r build && mkdir build && cd build && cmake .. && make
 
 CMD ["./build/BallLang"]
