@@ -1,6 +1,5 @@
 
 #include "lexer.h"
-#include "abstract_syntax_tree.h"
 #include "parser.h"
 #include <iostream>
 #include <version>
@@ -25,6 +24,8 @@ int main() {
                 handleTopLevel(std::move(token));
                 break;
         }
+        // eat newline character that comes after
+        std::cin.ignore();
     }
     return 0;
 }

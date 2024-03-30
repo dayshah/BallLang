@@ -4,7 +4,6 @@
 #include "parser.h"
 #include <iostream>
 #include <optional>
-#include <variant>
 #include <vector>
 
 namespace BallLang
@@ -90,7 +89,7 @@ std::optional<PrototypeAST> parsePrototype(Token&& token) {
     while (true) {
         Token arg = getTok();
         if (arg.type == TokenType::IDENTIFIER)
-            functionArgs.emplace_back(std::move(std::get<std::string>(arg.value)));
+            functionArgs.push_back(std::move(std::get<std::string>(arg.value)));
         else if (arg.type == TokenType::CLOSE_PAREN)
             return PrototypeAST { std::move(functionName), std::move(functionArgs) };
         else

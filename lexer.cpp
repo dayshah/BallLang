@@ -1,16 +1,15 @@
 
-#include <iostream>
 #include <unordered_map>
 #include "lexer.h"
-#include "parser.h"
 
 namespace BallLang
 {
 
 Token getTok() {
     char c;
-    do { c = getchar(); } while (c == ' ');
-
+    do {
+        c = std::cin.get();
+    } while (c == ' ');
     if (c == EOF)
         return Token(ENDOFFILE);
     else if (c == '(')
@@ -25,7 +24,7 @@ Token getTok() {
         std::string identifier{};
         do {
             identifier.push_back(c);
-            c = getchar();
+            c = std::cin.get();
         } while (isalnum(c));
         if (identifier == "def") return Token(DEF);
         else if (identifier == "extern") return Token(EXTERN);
@@ -35,14 +34,14 @@ Token getTok() {
         std::string number{};
         do {
             number.push_back(c);
-            c = getchar();
+            c = std::cin.get();
         } while (isdigit(c) || c == '.');
         double numberVal = strtod(number.c_str(), 0);
         return Token(NUMBER, numberVal);
     }
     else if (c == '#') { // a comment
         do {
-            c = getchar();
+            c = std::cin.get();
         } while (c != EOF && c != '\n' && c != '\r');
         if (c == EOF) return Token(ENDOFFILE);
         else return getTok();
