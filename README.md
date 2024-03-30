@@ -1,4 +1,4 @@
-# CodeWithBasketball
+# BallLang - Code with Basketball Terminology
 
 Build
 ```
