@@ -1,11 +1,7 @@
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y clang cmake llvm
+RUN apt-get update && apt-get install -y clang cmake llvm clangd git gdb
 
 WORKDIR /BallLang
 
 COPY . .
-
-RUN rm -r build && mkdir build && cd build && cmake .. && make
-
-CMD ["./build/BallLang"]
