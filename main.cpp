@@ -3,6 +3,10 @@
 #include "parser.h"
 #include <iostream>
 #include <version>
+#include "llvm/Config/abi-breaking.h"
+
+// TODO: fix to build correctly eventually
+int llvm::DisableABIBreakingChecks = 1;
 
 int main() {
     std::cout << "The version of C++ that clang is using is: " << __cplusplus << std::endl;

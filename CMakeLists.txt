@@ -16,7 +16,7 @@ include_directories(${LLVM_INCLUDE_DIRS})
 separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 add_definitions(${LLVM_DEFINITIONS_LIST})
 
-add_executable(BallLang main.cpp parser.cpp lexer.cpp)
+add_executable(BallLang main.cpp parser.cpp lexer.cpp abstract_syntax_tree.cpp)
 
 target_link_libraries(BallLang ${llvm_libs})
 

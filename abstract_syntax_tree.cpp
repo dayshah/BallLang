@@ -3,8 +3,6 @@
 
 namespace BallLang {
 
-llvm::Value NumberExprAST::*codegen() {
 
-}
 
 };
