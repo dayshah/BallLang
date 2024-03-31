@@ -47,7 +47,7 @@ std::optional<ExprAST> parsePrimary(Token&& token) {
 // LHS {binop} RHS
 std::optional<ExprAST> parseRHS(int lastPrecedence, ExprAST&& LHS) {
     while (true) {
-        if (!BinopPrecedence.contains(std::cin.peek())) 
+        if (!BinopPrecedence.contains(std::cin.peek()))
             return LHS; // can't handle spaces before binop rn
         Token binop = getTok();
         if (binop.type != BINOP) return std::nullopt; // peek failure
