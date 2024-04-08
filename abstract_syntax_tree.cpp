@@ -1,6 +1,7 @@
 
 #include <map>
 #include <memory>
+#include <iostream>
 #include <llvm/ADT/APFloat.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/IR/BasicBlock.h>
@@ -27,10 +28,24 @@ llvm::Value* ExprAST::codegen() {
 }
 
 llvm::Value* NumberExprAST::codegen() {
-    return nullptr;
+    return llvm::ConstantFP::get(*CONTEXT, llvm::APFloat(this->value));
 }
 
 llvm::Value* BinaryExprAST::codegen() {
+    llvm::Value* LValue = this->LHS.codegen();
+    llvm::Value* RValue = this->RHS.codegen();
+    switch (oper) {
+        case '+': return BUILDER->CreateFAdd(LValue, RValue);
+        case '-': return BUILDER->CreateFSub(LValue, RValue);
+        case '*': return BUILDER->CreateFMul(LValue, RValue);
+        case '<':
+            return BUILDER->CreateUIToFP(
+                BUILDER->CreateFCmpULT(LValue, RValue),
+                llvm::Type::getDoubleTy(*CONTEXT),
+                "booltmp"
+            );
+        default: std::cout << "INVALID OPERATOR: " << oper << std::endl;
+    }
     return nullptr;
 }
 
