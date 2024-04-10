@@ -26,8 +26,8 @@ Token getTok() {
             identifier.push_back(c);
             c = std::cin.get();
         } while (isalnum(c));
-        if (identifier == "def") return Token(DEF);
-        else if (identifier == "extern") return Token(EXTERN);
+        if (identifier == "play") return Token(DEF);
+        else if (identifier == "draft") return Token(EXTERN);
         else return Token(IDENTIFIER, std::move(identifier));
     }
     else if (isdigit(c) || c == '.') { // a number
