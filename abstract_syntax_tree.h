@@ -17,7 +17,7 @@ concept Codegenable = requires(T t) {
 
 struct ExprAST { // move to concept eventually for runtime perf
     ~ExprAST();
-    virtual llvm::Value* codegen();
+    virtual llvm::Value* codegen() const;
 };
 
 // number
@@ -27,7 +27,7 @@ struct NumberExprAST : public ExprAST {
     {}
     double value;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 // variableName
@@ -37,7 +37,7 @@ struct VariableExprAST : public ExprAST {
     {}
     std::string name;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 // expression binop expression
@@ -49,7 +49,7 @@ struct BinaryExprAST : public ExprAST {
     ExprAST LHS;
     ExprAST RHS;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 // calleeName (args{expression}...)
@@ -60,7 +60,7 @@ struct CallExprAST : public ExprAST {
     std::string callee;
     std::vector<ExprAST> args;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 // functionName(args{strings}...)
@@ -72,7 +72,7 @@ struct PrototypeAST : public ExprAST {
     std::string name;
     std::vector<std::string> args;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 // prototype body
@@ -84,7 +84,7 @@ struct FunctionAST : public ExprAST {
     PrototypeAST prototype;
     ExprAST body;
 
-    llvm::Value* codegen() override;
+    llvm::Value* codegen() const override;
 };
 
 }
